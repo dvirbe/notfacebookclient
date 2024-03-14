@@ -7,7 +7,7 @@ export async function GetUsername(userId) {
         const params={
             userId:userId
         }
-        const url =Constant.url + "get-username"
+        const url =Constant.URL + "get-username"
         const response = (await axios.get(url, {params}));
         if (response.data.success) {
 const username = response.data?.allUsers.map(user => user.username)

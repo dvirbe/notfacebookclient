@@ -7,11 +7,11 @@ export async function GetUserList(username) {
         const params={
             username:username
         }
-        const url =Constant.url + "usernameList"
+        const url =Constant.URL + "usernameList"
         const response = (await axios.get(url, {params}));
 
         if (response.data.success) {
-            return response.data?.allUsers?.map((user) => user.username)
+            return response.data?.allUsers?.map((user) => user )
         } else {
             console.log('get failed:', response.data);
             return [""]

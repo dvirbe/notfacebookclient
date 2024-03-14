@@ -4,7 +4,7 @@ import axios from "axios";
 export async function GetAvatarLink(id) {
             try {
                 const params = {id: id}
-                const url = Constant.url + "get-avatar"
+                const url = Constant.URL + "get-avatar"
                 const response = await axios.get(url, {params})
                     .then(response => response.data.string)
                     .catch(error => Promise.reject(error))

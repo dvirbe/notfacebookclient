@@ -8,9 +8,10 @@ export async function UploadAvatar(id, path) {
             id: id,
             path: path
         }
-        const url = Constant.url + "uploadAvatar";
+        const url = Constant.URL + "uploadAvatar";
         axios.defaults.withCredentials = true;
         const response = (await axios.get(url, {params}));
+        console.log("test");
         if (response.data.success) {
 
             console.log('Create successful!');

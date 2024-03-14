@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, Button, CardMedia, Stack, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import AppIcon from "./AppIcon";
 
 function HomeScreen() {
-    const navigate = useNavigate();
+   const navigate = useNavigate();
     return (
         <Box>
             <Stack spacing={4} display="flex" padding={8} alignItems="center">
@@ -15,7 +15,7 @@ function HomeScreen() {
                 <Button
                     sx={{textTransform: 'inherit'}}
                     variant="contained"
-                    onClick={()=>navigate("/Login")}>
+                    onClick={()=>navigate("/Login") }>
                     Login
                 </Button>
                 <Button
@@ -24,7 +24,6 @@ function HomeScreen() {
                     variant="outlined">Create Account
                 </Button>
             </Stack>
-
         </Box>
     );
 }

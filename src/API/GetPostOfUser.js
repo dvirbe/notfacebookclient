@@ -7,7 +7,7 @@ export async function GetPostOfUser(userId) {
         const params={
             userId:userId
         }
-        const url =Constant.url + "get-post-of-user"
+        const url =Constant.URL + "get-post-of-user"
         const response = (await axios.get(url, {params}));
         if (response.data.success) {
             return response.data?.allPosts?.map((post) => post)

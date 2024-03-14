@@ -1,7 +1,15 @@
 import './App.css';
 import React, {useState} from 'react';
 import LoginCard from "./Components/LoginCard";
-import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import {
+    createBrowserRouter,
+    RouterProvider,
+    Link,
+    Route,
+    Routes,
+    BrowserRouter as Router,
+    Outlet
+} from 'react-router-dom';
 import {Typography} from "@mui/material";
 import RegisterCard from "./Components/RegisterCard";
 import HomeScreen from "./Components/HomeScreen";
@@ -9,72 +17,59 @@ import NavBar from "./Components/NavBar";
 import Feed from "./Components/Feed";
 import ProfilePage from "./Components/ProfilePage";
 import Post from "./Components/Post";
-import {ReadCookie, SetCookie} from "./Utils";
-
-
+import {DeleteCookie, ReadCookie} from "./Utils";
+import ErrorPage from "./Components/ErrorPage";
+import {HOME_URL, LOGIN_URL, PROFILE_URL, REGISTER_URL} from "./Constants";
 
 function App(props) {
-    const [id, setId] = useState(5);
-    // SetCookie("name","dasd",365)
-    // SetCookie("nameaa","nm,fnm,hsd",365)
-    // SetCookie("namea","mn,nm,",365)
-    // SetCookie("name3","nm,",365)
-    //
-    // SetCookie("name4","nm,",365)
-    // console.log( document.cookie)
+    const [id, setId] = useState(ReadCookie("id"));
 
-    async function logout() {
-        setId(null)
-        await setRouter(pathLog2);
+    async function login() {
+        setId(ReadCookie("id"))
     }
 
-    const pathLog1 = createBrowserRouter([
-            {
-               // path: "/",
-                element: <NavBar id={id} logout={() => logout()}/>,
-                children: [
-                    {
-                        path: "/Feed",
-                        element: <Feed id={id}/>
-                    },
-                    {
-                        path: "/u/:id",
-                        element: <ProfilePage/>
-                    },
-                    {
-                        path: "/u/" + id,
-                        element: <Typography>your profile</Typography>
-                    },
-                    {
-                        path: "/post",
-                        element: <Post/>
-                    },
-                ]
-            },
-        ]
-    )
-    const pathLog2 = createBrowserRouter([{
-        path: "/",
-        element: <HomeScreen/>
-    },
-        {
-            path: "/Login",
-            element: <LoginCard/>,
-        },
-        {
-            path: "/Register",
-            element: <RegisterCard/>
-        },])
-
-
-    const [router, setRouter] = useState(pathLog1)
+    async function logout() {
+        DeleteCookie("id")
+        DeleteCookie("token")
+        setId("")
+    }
 
 
     return (
-        <RouterProvider router={router}>
-        </RouterProvider>
-    )
+        <Router>
+            <Routes>
+                <Route path='*' element={<ErrorPage/>}/>
+                {id === "" && (
+                    <>
+                        <Route path={HOME_URL} element={<HomeScreen/>}/>
+                        <Route path={LOGIN_URL} element={<LoginCard login={login}/>}/>
+                        <Route path={REGISTER_URL} element={<RegisterCard/>}/>
+                    </>
+                )
+                }
 
+                {id !== "" && (
+                    <Route
+                        element={
+                            <>
+                                <NavBar id={id} logout={logout}/>
+                            </>
+                        }
+
+                        children={
+                            <>
+                                <Route path={HOME_URL} element={<Feed id={id}/>}/>
+                                <Route path={PROFILE_URL+":id"} element={<ProfilePage/>}/>
+                                <Route path={PROFILE_URL+id} element={<Typography>your profile</Typography>}/>
+                            </>
+
+                        }
+                    />
+                )
+                }
+            </Routes>
+        </Router>
+    )
 }
 
 export default App;

@@ -8,7 +8,7 @@ export async function CreateAccount(username, password,repeat) {
             password:password,
             repeat:repeat
         }
-        const url =Constant.url + "register"
+        const url =Constant.URL + "register"
 
 
         const response = (await axios.get(url, {params}));
