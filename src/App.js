@@ -9,10 +9,19 @@ import NavBar from "./Components/NavBar";
 import Feed from "./Components/Feed";
 import ProfilePage from "./Components/ProfilePage";
 import Post from "./Components/Post";
+import {ReadCookie, SetCookie} from "./Utils";
+
 
 
 function App(props) {
     const [id, setId] = useState(5);
+    // SetCookie("name","dasd",365)
+    // SetCookie("nameaa","nm,fnm,hsd",365)
+    // SetCookie("namea","mn,nm,",365)
+    // SetCookie("name3","nm,",365)
+    //
+    // SetCookie("name4","nm,",365)
+    // console.log( document.cookie)
 
     async function logout() {
         setId(null)
@@ -21,7 +30,7 @@ function App(props) {
 
     const pathLog1 = createBrowserRouter([
             {
-                path: "/",
+               // path: "/",
                 element: <NavBar id={id} logout={() => logout()}/>,
                 children: [
                     {

@@ -8,6 +8,7 @@ function Post(props) {
     useEffect( () => {
         const fetchData = async () => {
             setIcon(await GetAvatarLink(props.userId))
+            console.log(props.userId)
         }
         fetchData()
     },[]);

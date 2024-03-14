@@ -1,14 +1,15 @@
 import * as Constant from "../Constants";
 import axios from "axios";
 
-export async function UploadAvatar(id,path) {
+export async function UploadAvatar(id, path) {
     try {
         const params = {
-            id:id,
-            path:path
+
+            id: id,
+            path: path
         }
         const url = Constant.url + "uploadAvatar";
-
+        axios.defaults.withCredentials = true;
         const response = (await axios.get(url, {params}));
         if (response.data.success) {
 

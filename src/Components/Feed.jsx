@@ -3,8 +3,6 @@ import {Avatar, Box, Button, Stack, TextField} from "@mui/material";
 import * as Utils from "../Utils";
 import {UploadAvatar} from "../API/UploadAvatar";
 import {GetAvatarLink} from "../API/GetAvatarLink";
-import {GetPostOfUser} from "../API/GetPostOfUser";
-import {GetUsername} from "../API/GetUsername";
 
 function Feed(props) {
     const posts = []
