@@ -5,11 +5,12 @@ import axios from "axios";
 export async function GetPostOfUser(userId) {
     try {
         const params={
-            userId:userId
+            // userId:userId
         }
-        const url =Constant.URL + "get-post-of-user"
+        const url =Constant.URL + "get-feed"
+        axios.defaults.withCredentials = true;
         const response = (await axios.get(url, {params}));
-
+        console.log(response);
         if (response.data.success) {
             return response.data?.allPosts?.map((post) => post)
         } else {

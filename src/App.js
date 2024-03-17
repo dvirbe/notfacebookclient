@@ -2,27 +2,49 @@ import './App.css';
 import React, {useState} from 'react';
 import LoginCard from "./Components/LoginCard";
 import {
-    createBrowserRouter,
-    RouterProvider,
-    Link,
     Route,
     Routes,
-    BrowserRouter as Router,
-    Outlet
+    BrowserRouter as Router
 } from 'react-router-dom';
-import {Typography} from "@mui/material";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import RegisterCard from "./Components/RegisterCard";
 import HomeScreen from "./Components/HomeScreen";
 import NavBar from "./Components/NavBar";
 import Feed from "./Components/Feed";
-import ProfilePage from "./Components/ProfilePage";
-import Post from "./Components/Post";
 import {DeleteCookie, ReadCookie} from "./Utils";
 import ErrorPage from "./Components/ErrorPage";
 import {HOME_URL, LOGIN_URL, PROFILE_URL, REGISTER_URL} from "./Constants";
+import Test from "./Components/ProfilePage";
 
 function App(props) {
     const [id, setId] = useState(ReadCookie("id"));
+
+    const theme = createTheme({
+        palette: {
+            background: {
+                // default: 'rgba(255,124,124,0.16)',
+            },
+            primary: {
+                main: '#466bb0',
+                // light: ,
+                // dark: ,
+                // contrastText: ,
+            },
+            secondary: {
+                main: '#B08B46',
+                // light: ,
+                // dark: ,
+                // contrastText: ,
+            },
+        },
+        components: {
+            // MuiButton: {
+            //     style: {
+            //         textTransform: 'inherit',
+            //     }
+            // }
+        }
+    });
 
     async function login() {
         setId(ReadCookie("id"))
@@ -36,39 +58,42 @@ function App(props) {
 
 
     return (
-        <Router>
-            <Routes>
-                <Route path='*' element={<ErrorPage/>}/>
-                {id === "" && (
-                    <>
-                        <Route path={HOME_URL} element={<HomeScreen/>}/>
-                        <Route path={LOGIN_URL} element={<LoginCard login={login}/>}/>
-                        <Route path={REGISTER_URL} element={<RegisterCard/>}/>
-                    </>
-                )
-                }
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Router>
+                <Routes>
+                    <Route path='*' element={<ErrorPage/>}/>
+                    {id === "" && (
+                        <>
+                            <Route path={HOME_URL} element={<HomeScreen/>}/>
+                            <Route path={LOGIN_URL} element={<LoginCard login={login}/>}/>
+                            <Route path={REGISTER_URL} element={<RegisterCard/>}/>
+                        </>
+                    )
+                    }
 
-                {id !== "" && (
-                    <Route
-                        element={
-                            <>
-                                <NavBar id={id} logout={logout}/>
-                            </>
-                        }
+                    {id !== "" && (
+                        <Route
+                            element={
+                                <>
+                                    <NavBar id={id} logout={logout}/>
+                                </>
+                            }
 
-                        children={
-                            <>
-                                <Route path={HOME_URL} element={<Feed id={id}/>}/>
-                                <Route path={PROFILE_URL+":id"} element={<ProfilePage/>}/>
-                                <Route path={PROFILE_URL+id} element={<Typography>your profile</Typography>}/>
-                            </>
+                            children={
+                                <>
+                                    <Route path={HOME_URL} element={<Feed id={id}/>}/>
+                                    <Route path={PROFILE_URL + ":id"} element={<Test/>}/>
+                                    <Route path={PROFILE_URL + id} element={<Test/>}/>
+                                </>
 
-                        }
-                    />
-                )
-                }
-            </Routes>
-        </Router>
+                            }
+                        />
+                    )
+                    }
+                </Routes>
+            </Router>
+        </ThemeProvider>
     )
 }
 

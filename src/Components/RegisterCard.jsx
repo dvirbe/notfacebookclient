@@ -1,22 +1,57 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Card, Stack, TextField, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {CreateAccount} from "../API/CreateAccount";
 
-function SinInCard() {
+function RegisterCard() {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [repeat, setRepeat] = useState("");
-    const errorRepeat = repeat !== password && repeat.length > 0
-    const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W).{6,}$/;
+    const [usernameError, setUsernameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [repeatError, setRepeatError] = useState(false);
+    const [error, setError] = useState("");
 
-    function errorPassword() {
-        let error = false
-        if (password.length >= 1) {
-            error = !passwordRegex.test(password)
+
+    const regex = /^[a-zA-Z0-9]{4,30}$/;
+
+    useEffect(() => {
+        if (username.length >= 1) {
+            setUsernameError(!regex.test(username))
         }
-        return error
+    }, [username]);
+
+
+    useEffect(() => {
+        if (password.length >= 1) {
+            setPasswordError(!regex.test(password))
+        }
+    }, [password]);
+
+    useEffect(() => {
+       setRepeatError(repeat !== password && repeat.length > 0)
+    }, [password,repeat]);
+
+
+    async function createAccount() {
+         CreateAccount(username, password, repeat).then(result => {
+             if (result===100){
+                 setError("Missing username")
+             }else if(result===101){
+                 setError("Missing password")
+             }else if(result===102){
+                 setError("Password do not match!")
+             }else if(result===103){
+                 setError("This username is already taken ")
+             }else if(result===104){
+                 setError("The username does not satisfy the requirements")
+             }else if(result===105){
+                 setError("The password does not satisfy the requirements")
+             }
+
+
+         });
     }
 
     return (
@@ -30,7 +65,14 @@ function SinInCard() {
                         variant="h4">
                         Create Account
                     </Typography>
+                    <Typography
+                        variant="h7"
+                        color="error"
+                    >
+                        {error}
+                    </Typography>
                     <TextField
+                        error={usernameError}
                         className="customTextField"
                         variant={"outlined"}
                         type={"text"}
@@ -51,8 +93,8 @@ function SinInCard() {
                     />
 
                     <TextField
-                        error={errorRepeat}
-                        helperText={errorRepeat ? "Passwords must be the same!" : ""}
+                        error={repeatError}
+                        helperText={repeatError ? "Passwords must be the same!" : ""}
                         className="customTextField"
                         variant={"outlined"}
                         type={"password"}
@@ -64,7 +106,7 @@ function SinInCard() {
                     <Button
                         sx={{textTransform: 'inherit'}}
                         variant={"contained"}
-                        onClick={() => CreateAccount(username, password, repeat)}
+                        onClick={() => createAccount()}
                     >Create Account</Button>
 
                     <Button
@@ -82,4 +124,4 @@ function SinInCard() {
 }
 
 
-export default SinInCard;
+export default RegisterCard;

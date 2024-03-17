@@ -9,20 +9,24 @@ import FeedIcon from '@mui/icons-material/Feed';
 import PersonIcon from '@mui/icons-material/Person';
 import {GetUserList} from "../API/GetUserList";
 import {useState} from "react";
-import {Link, Outlet, useNavigate} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {HOME_URL, PROFILE_URL} from "../Constants";
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 
 function NavBar(props) {
+    const location = useLocation();
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
     const [usernameOptions, setUsernameOptions] = useState([]);
 
+
     async function autocompleteHandler(newValue) {
         setSearch(newValue)
-        const temp = await GetUserList(newValue);
-        temp.filter(user => user.id !== props.id)
+        let temp = await GetUserList(newValue);
+        temp = temp.filter(user => {
+            return user.id != props.id
+        })
         setUsernameOptions(temp)
     }
 
@@ -30,8 +34,9 @@ function NavBar(props) {
         const ids = usernameOptions.filter(element => element.username.includes(search));
         if (ids.length >= 1) {
             navigate(PROFILE_URL + ids[0].id)
-
         }
+        setSearch("")
+        setUsernameOptions([])
     }
 
     const handleLogout = async () => {
@@ -87,27 +92,34 @@ function NavBar(props) {
                                         searchHandle()
                                     }
                                     }
-                            ><PersonSearchIcon/>
+                            >
+                                <PersonSearchIcon/>
                                 Search
                             </Button>
                         </Stack>
 
                         <Stack direction="row" spacing={4}>
                             <Button
-                                sx={{textTransform: 'inherit'}}
-                                color="inherit"
+                                sx={{
+                                    textTransform: 'inherit',
+                                    color: location.pathname === HOME_URL ? "secondary.light" : "inherit"
+                                }}
                                 onClick={() => {
                                     navigate(HOME_URL)
                                 }}
-                            ><FeedIcon/>
+                            >
+                                <FeedIcon/>
                                 Home Feed</Button>
 
-                            <Button sx={{textTransform: 'inherit'}}
-                                    color="inherit"
+                            <Button sx={{
+                                textTransform: 'inherit',
+                                color: location.pathname === PROFILE_URL + props.id ? "secondary.light" : "inherit"
+                            }}
                                     onClick={() => {
                                         navigate(PROFILE_URL + props.id)
                                     }}
-                            ><PersonIcon/>
+                            >
+                                <PersonIcon/>
                                 Your Profile
                             </Button>
 
@@ -117,8 +129,8 @@ function NavBar(props) {
                                         handleLogout()
                                     }
                                     }
-
-                            ><LogoutIcon/>
+                            >
+                                <LogoutIcon/>
                                 Log Out
                             </Button>
                         </Stack>

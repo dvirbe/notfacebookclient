@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Button, CardMedia, Stack, Typography} from "@mui/material";
-import {Outlet, useNavigate} from "react-router-dom";
+import { Box, Button, Stack, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import AppIcon from "./AppIcon";
 
 function HomeScreen() {

@@ -15,9 +15,10 @@ export async function CreateAccount(username, password,repeat) {
 
         if (response.data.success) {
 
-            console.log('Create successful!');
+           return response.data.success;
         } else {
-            console.log('Create failed:', response.data);
+            console.log(response.data?.errorCode)
+            return response.data?.errorCode;
         }
     } catch (error) {
         console.error('Error during Create:', error);

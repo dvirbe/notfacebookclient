@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {Box, Button, Card, Stack, TextField, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {Login} from "../API/Login";
-import {HOME_URL, REGISTER_URL} from "../Constants";
+import {HOME_URL, PROFILE_URL, REGISTER_URL} from "../Constants";
+import {ReadCookie} from "../Utils";
 
 function LoginCard(props) {
    const navigate = useNavigate();
@@ -11,10 +12,10 @@ function LoginCard(props) {
     const [loginError, setLoginError] = useState(false);
 
     async function handleLogin() {
-        const response = await Login(username, password)
-        if(response){
+        const success = await Login(username, password)
+        if(success){
             await props.login()
-            navigate(HOME_URL)
+            navigate(PROFILE_URL+ReadCookie("id"))
         }else{
             setLoginError(true)
         }

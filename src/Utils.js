@@ -1,12 +1,19 @@
 import Post from "./Components/Post";
 import React from "react";
+import {Typography} from "@mui/material";
+
 
 
 export function renderPosts(posts) {
-    return posts.map((post) => {
-        return <Post key={post.postId} userId={post.userId} username={post.username} text={post.text}/>
-    })
+    if (posts.length === 0) {
+        return <Typography variant="h4">No Posts Found!</Typography>
+    }else {
+        return posts.map((post) => {
+            return <Post key={post.postId} userId={post.userId} username={post.username} text={post.text}/>
+        })
+    }
 }
+
 
 export function SetCookie(name, value, ttl) {
     const date = new Date()
