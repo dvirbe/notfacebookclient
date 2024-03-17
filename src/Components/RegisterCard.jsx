@@ -76,14 +76,14 @@ function RegisterCard() {
                         className="customTextField"
                         variant={"outlined"}
                         type={"text"}
-                        helperText={"at least 4 characters and be only alphanumeric characters."}
+                        helperText={"Between 4 -30 characters long,Can contain only numbers and english characters!"}
                         label={"Username"}
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
                     />
                     <TextField
-                        error={errorPassword()}
-                        helperText={"at least 6 characters long and must contain at least 1 special characters and 1 alphanumeric character "}
+                        error={passwordError}
+                        helperText={"Between 4 -30 characters long,Can contain only numbers and english characters! "}
                         className="customTextField"
                         variant={"outlined"}
                         type={"password"}
